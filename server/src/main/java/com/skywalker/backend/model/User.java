@@ -27,7 +27,7 @@ public class User implements UserDetails{
     @Column(unique = true, nullable = false)
     private String email;
 
-    @Column(nullable = false)
+    @Column(nullable = true)
     private String password;
 
     @JsonFormat(pattern = "yyyy-MM-dd")
@@ -36,6 +36,14 @@ public class User implements UserDetails{
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Milestone> milestones;
+
+    // OAuth2 fields
+    @Enumerated(EnumType.STRING)
+    private AuthProvider authProvider = AuthProvider.LOCAL;
+
+    private String providerId;
+
+    private String imageUrl;
 
 
     @Override
@@ -68,6 +76,10 @@ public class User implements UserDetails{
         return true;
     }
 
-
+    public enum AuthProvider {
+        LOCAL,
+        GOOGLE,
+        GITHUB
+    }
 
 }

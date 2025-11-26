@@ -13,6 +13,8 @@ public class Utils {
         userDTO.setFirstName(user.getFirstName());
         userDTO.setLastName(user.getLastName());
         userDTO.setEmail(user.getEmail());
+        userDTO.setAuthProvider(user.getAuthProvider() != null ? user.getAuthProvider().name() : null);
+        userDTO.setImageUrl(user.getImageUrl());
         
         return userDTO;
     }

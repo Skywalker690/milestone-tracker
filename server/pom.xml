@@ -102,7 +102,11 @@
 			<artifactId>micrometer-registry-prometheus</artifactId>
 		</dependency>
 
-
+		<!-- OAuth2 Client for Google and GitHub -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-oauth2-client</artifactId>
+		</dependency>
 
 	</dependencies>
 
