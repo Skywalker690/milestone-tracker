@@ -10,6 +10,35 @@ spring:
       ddl-auto: update
     show-sql: true
 
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            client-id: ${env.GOOGLE_CLIENT_ID}
+            client-secret: ${env.GOOGLE_CLIENT_SECRET}
+            redirect-uri: "{baseUrl}/login/oauth2/code/{registrationId}"
+            scope:
+              - profile
+              - email
+          github:
+            client-id: ${env.GITHUB_CLIENT_ID}
+            client-secret: ${env.GITHUB_CLIENT_SECRET}
+            redirect-uri: "{baseUrl}/login/oauth2/code/{registrationId}"
+            scope:
+              - read:user
+              - user:email
+        provider:
+          github:
+            user-info-uri: https://api.github.com/user
+            user-name-attribute: id
+
+jwt:
+  secret: ${env.JWT_SECRET}
+
+oauth2:
+  frontend-redirect: ${env.OAUTH2_REDIRECT_URI:http://localhost:3000/oauth2/callback}
+
 management:
   endpoints:
     web:
@@ -18,6 +47,3 @@ management:
   endpoint:
     health:
       show-details: always
-
-jwt:
-  secret: ${env.JWT_SECRET}

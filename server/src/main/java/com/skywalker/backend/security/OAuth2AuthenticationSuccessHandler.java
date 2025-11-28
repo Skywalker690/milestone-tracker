@@ -7,14 +7,23 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.oauth2.client.OAuth2AuthorizedClient;
+import org.springframework.security.oauth2.client.OAuth2AuthorizedClientService;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
+import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Map;
 
 @Slf4j
@@ -24,8 +33,10 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
 
     private final JWTUtils jwtUtils;
     private final UserRepository userRepository;
+    private final OAuth2AuthorizedClientService authorizedClientService;
 
-    @Value("${oauth2.redirect-uri:http://localhost:3000/oauth2/callback}")
+
+    @Value("${oauth2.frontend-redirect}")
     private String redirectUri;
 
     @Override
@@ -35,7 +46,7 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
         OAuth2User oAuth2User = oauthToken.getPrincipal();
         String registrationId = oauthToken.getAuthorizedClientRegistrationId();
 
-        String email = extractEmail(oAuth2User, registrationId);
+        String email = extractEmail(oAuth2User, registrationId, authentication);
         String name = extractName(oAuth2User, registrationId);
         String providerId = extractProviderId(oAuth2User, registrationId);
         String imageUrl = extractImageUrl(oAuth2User, registrationId);
@@ -98,16 +109,29 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
         return userRepository.save(newUser);
     }
 
-    private String extractEmail(OAuth2User oAuth2User, String registrationId) {
+    private String extractEmail(OAuth2User oAuth2User, String registrationId, Authentication authentication) {
         Map<String, Object> attributes = oAuth2User.getAttributes();
 
         if ("google".equals(registrationId)) {
             return (String) attributes.get("email");
-        } else if ("github".equals(registrationId)) {
-            return (String) attributes.get("email");
         }
+
+        if ("github".equals(registrationId)) {
+            String email = (String) attributes.get("email");
+            if (email != null) return email;
+
+            OAuth2AuthenticationToken oauthToken = (OAuth2AuthenticationToken) authentication;
+            OAuth2AuthorizedClient client = authorizedClientService
+                    .loadAuthorizedClient("github", oauthToken.getName());
+
+            if (client == null) return null;
+
+            return fetchGitHubPrimaryEmail(client.getAccessToken().getTokenValue());
+        }
+
         return null;
     }
+
 
     private String extractName(OAuth2User oAuth2User, String registrationId) {
         Map<String, Object> attributes = oAuth2User.getAttributes();
@@ -146,4 +170,29 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
         }
         return null;
     }
+    private String fetchGitHubPrimaryEmail(String accessToken) {
+        RestTemplate restTemplate = new RestTemplate();
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setBearerAuth(accessToken);
+        HttpEntity<Void> entity = new HttpEntity<>(headers);
+
+        ResponseEntity<List<Map<String, Object>>> response = restTemplate.exchange(
+                "https://api.github.com/user/emails",
+                HttpMethod.GET,
+                entity,
+                new ParameterizedTypeReference<List<Map<String, Object>>>() {}
+        );
+
+        List<Map<String, Object>> emails = response.getBody();
+        if (emails == null) return null;
+
+        return emails.stream()
+                .filter(e -> Boolean.TRUE.equals(e.get("primary")) && Boolean.TRUE.equals(e.get("verified")))
+                .map(e -> (String) e.get("email"))
+                .findFirst()
+                .orElse(null);
+    }
+
+
 }
