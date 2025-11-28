@@ -1,10 +1,8 @@
 import { GoogleGenAI, Type } from "@google/genai";
 
-// Initialize Gemini
-// Note: In a real production app, this should be proxied through a backend to protect the key.
 // As per instructions, we access process.env.API_KEY directly.
 const getAiClient = () => {
-  const key = "AIzaSyDi1mPXCekTZCjRQUoKG7optcGMRbv5shc";
+  const key = process.env.GEMINI_API_KEY;
   if (!key) {
     console.warn("Gemini API Key is missing. AI features will be disabled.");
     return null;
