@@ -251,7 +251,7 @@ const Milestones: React.FC<MilestonesProps> = ({ milestones, onCreate, onUpdate,
     }
   };
 
-  const acceptSuggestion = async (s: SuggestedMilestone) => {
+  const acceptSuggestion = async (s: SuggestedMilestone, index: number) => {
     const achieveDate = new Date();
     achieveDate.setDate(achieveDate.getDate() + s.daysFromNow);
     
@@ -260,6 +260,9 @@ const Milestones: React.FC<MilestonesProps> = ({ milestones, onCreate, onUpdate,
       description: s.description,
       achieveDate: achieveDate.toISOString().split('T')[0]
     });
+
+    // Remove the suggested milestone from the list
+    setSuggestions((prev) => prev.filter((_, idx) => idx !== index));
   };
 
   const toggleMilestone = async (m: Milestone) => {
@@ -518,7 +521,7 @@ const Milestones: React.FC<MilestonesProps> = ({ milestones, onCreate, onUpdate,
                             </p>
                           </div>
                           <button 
-                            onClick={() => acceptSuggestion(s)}
+                            onClick={() => acceptSuggestion(s, idx)}
                             className="flex-shrink-0 p-2 bg-white border border-slate-200 rounded-xl text-slate-600 hover:text-violet-600 hover:border-violet-200 hover:shadow-md transition-all"
                             title="Add this milestone"
                           >

@@ -27,7 +27,6 @@ public class User implements UserDetails{
     @Column(unique = true, nullable = false)
     private String email;
 
-    @Column(nullable = true)
     private String password;
 
     @JsonFormat(pattern = "yyyy-MM-dd")
