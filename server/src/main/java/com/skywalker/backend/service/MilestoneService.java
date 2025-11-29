@@ -2,6 +2,7 @@ package com.skywalker.backend.service;
 
 import com.skywalker.backend.dto.MilestoneDTO;
 import com.skywalker.backend.model.Milestone;
+import com.skywalker.backend.model.User;
 import com.skywalker.backend.repository.MilestoneRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -17,15 +18,18 @@ import java.util.stream.Collectors;
 public class MilestoneService {
 
     private final MilestoneRepository repository;
+    private final UserService userService;
 
     public List<MilestoneDTO> getAllMilestones() {
-        return repository.findAll().stream()
+        User currentUser = userService.getCurrentUser();
+        return repository.findByUser(currentUser).stream()
                 .map(this::toDTO)
                 .collect(Collectors.toList());
     }
 
     public Optional<MilestoneDTO> getMilestoneById(long id) {
-        return repository.findById(id).map(this::toDTO);
+        User currentUser = userService.getCurrentUser();
+        return repository.findByIdAndUser(id, currentUser).map(this::toDTO);
     }
 
     public MilestoneDTO createMilestone(Milestone milestone) {
@@ -34,14 +38,15 @@ public class MilestoneService {
     }
 
     public void deleteMilestone(long id) {
-        if (!repository.existsById(id)) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Milestone not found");
-        }
-        repository.deleteById(id);
+        User currentUser = userService.getCurrentUser();
+        Milestone milestone = repository.findByIdAndUser(id, currentUser)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Milestone not found"));
+        repository.delete(milestone);
     }
 
     public Optional<MilestoneDTO> updateMilestone(long id, Milestone milestone) {
-        return repository.findById(id)
+        User currentUser = userService.getCurrentUser();
+        return repository.findByIdAndUser(id, currentUser)
                 .map(existing -> {
                     existing.setTitle(milestone.getTitle());
                     existing.setDescription(milestone.getDescription());
