@@ -1,6 +1,5 @@
 import { GoogleGenAI, Type } from "@google/genai";
 
-// As per instructions, we access process.env.API_KEY directly.
 const getAiClient = () => {
   const key = process.env.GEMINI_API_KEY;
   if (!key) {

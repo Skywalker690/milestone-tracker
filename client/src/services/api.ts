@@ -1,4 +1,6 @@
-const BASE_URL = 'http://localhost:8080/api';
+
+//const REACT_APP_API_BASE_URL = 'http://localhost:8080/api';
+const REACT_APP_API_BASE_URL =process.env.REACT_APP_API_BASE_URL || 'http://localhost:8080/api';
 
 type RequestMethod = 'GET' | 'POST' | 'PUT' | 'DELETE';
 
@@ -38,7 +40,7 @@ export const api = {
     };
 
     try {
-      const response = await fetch(`${BASE_URL}${endpoint}`, config);
+      const response = await fetch(`${REACT_APP_API_BASE_URL}${endpoint}`, config);
 
       // Handle 401 Unauthorized globally
       if (response.status === 401) {
