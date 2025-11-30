@@ -17,8 +17,8 @@ Before you begin, make sure you have:
 ### Step 1: Clone the Repository
 
 ```bash
-git clone https://github.com/Skywalker690/milestone-tracker1.git
-cd milestone-tracker1
+git clone https://github.com/Skywalker690/milestone-tracker.git
+cd milestone-tracker
 ```
 
 ### Step 2: Set Up PostgreSQL Database
@@ -50,8 +50,12 @@ CREATE DATABASE milestone_tracker;
    DB_URL=jdbc:postgresql://localhost:5432/milestone_tracker
    DB_USERNAME=your_postgres_username
    DB_PASSWORD=your_postgres_password
-   JWT_SECRET=your_secret_key_here_at_least_256_bits_long
-   JWT_EXPIRATION=86400000
+   JWT_SECRET=your_jwt_secret_key_here_minimum_256_bits
+   GOOGLE_CLIENT_ID=oauth-google-client-id
+   GOOGLE_CLIENT_SECRET=oauth-google-client-secret
+   GITHUB_CLIENT_ID= oauth-github-client-id
+   GITHUB_CLIENT_SECRET= oauth-github-client-secret
+   OAUTH2_REDIRECT_URI= frontend_redirect_url
    ```
 
    **Generate a secure JWT secret:**
@@ -239,14 +243,6 @@ Recommended tools for database management:
 - **DBeaver**: Universal database tool
 - **TablePlus**: Modern, native GUI
 
-## Next Steps
-
-- 📖 Read the full [README.md](README.md) for detailed information
-- 🏗️ Check out [ARCHITECTURE.md](ARCHITECTURE.md) to understand the system design
-- 🔌 Review [API.md](API.md) for API documentation
-- 🤝 See [CONTRIBUTING.md](CONTRIBUTING.md) to contribute
-- 📝 Check [CHANGELOG.md](CHANGELOG.md) for version history
-
 ## Getting Help
 
 If you encounter issues:
@@ -254,24 +250,7 @@ If you encounter issues:
 1. **Check Documentation**: README.md, API.md, ARCHITECTURE.md
 2. **Search Issues**: [GitHub Issues](https://github.com/Skywalker690/milestone-tracker1/issues)
 3. **Ask Questions**: Open a new issue with the `question` label
-4. **Read Code of Conduct**: [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md)
 
-## Stopping the Application
-
-### Stop Frontend
-Press `Ctrl + C` in the terminal running npm start
-
-### Stop Backend
-Press `Ctrl + C` in the terminal running mvn spring-boot:run
-
-### Stop PostgreSQL (Optional)
-```bash
-# On Linux
-sudo systemctl stop postgresql
-
-# On Mac with Homebrew
-brew services stop postgresql
-```
 
 ---
 

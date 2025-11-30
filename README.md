@@ -10,19 +10,9 @@ A modern, full-stack web application for tracking and managing personal or profe
 ![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)
 ![GitHub Stars](https://img.shields.io/github/stars/Skywalker690/milestone-tracker?style=social)
 
-## 📚 Documentation
-
-- **[Quick Setup Guide](/docs/SETUP.md)** - Get started in 5 minutes
-- **[API Documentation](/docs/API.md)** - Complete API reference
-- **[Architecture Guide](/docs/ARCHITECTURE.md)** - System design and architecture
-- **[Deployment Guide](/docs/DEPLOYMENT.md)** - Production deployment instructions
-- **[Contributing Guidelines](CONTRIBUTING.md)** - How to contribute
-- **[Code of Conduct](CODE_OF_CONDUCT.md)** - Community guidelines
-- **[Security Policy](/docs/SECURITY.md)** - Security and vulnerability reporting
-
 ## ✨ Features
 
-- **🔐 User Authentication**: Secure JWT-based authentication system
+- **🔐 User Authentication**: Secure JWT-based authentication system and OAuth2
 - **📝 Milestone Management**: Create, read, update, and delete milestones
 - **🔍 Advanced Filtering**: Search and filter milestones by status, date, or keywords
 - **📊 Progress Tracking**: Visual progress indicators and completion statistics
@@ -49,6 +39,7 @@ A modern, full-stack web application for tracking and managing personal or profe
 - **Spring Data JPA** - Data persistence
 - **PostgreSQL** - Database
 - **JWT (JSON Web Tokens)** - Token-based authentication
+- **OAuth2** - Both Google and Github authentication supported
 - **Lombok** - Java boilerplate reduction
 - **Maven** - Dependency management
 
@@ -85,7 +76,11 @@ Before you begin, ensure you have the following installed:
    DB_USERNAME=your_postgres_username
    DB_PASSWORD=your_postgres_password
    JWT_SECRET=your_jwt_secret_key_here_minimum_256_bits
-   JWT_EXPIRATION=86400000
+   GOOGLE_CLIENT_ID=oauth-google-client-id
+   GOOGLE_CLIENT_SECRET=oauth-google-client-secret
+   GITHUB_CLIENT_ID= oauth-github-client-id
+   GITHUB_CLIENT_SECRET= oauth-github-client-secret
+   OAUTH2_REDIRECT_URI= frontend_redirect_url
    ```
 
 3. Build and run the backend:
@@ -196,8 +191,6 @@ milestone-tracker1/
 ├── .gitignore
 ├── LICENSE
 ├── README.md
-├── CODE_OF_CONDUCT.md
-└── CONTRIBUTING.md
 ```
 
 ## 🔌 API Endpoints
@@ -220,42 +213,6 @@ All milestone endpoints require authentication via JWT token in the Authorizatio
 Authorization: Bearer <your_jwt_token>
 ```
 
-## 🧪 Running Tests
-
-### Backend Tests
-```bash
-cd server
-./mvnw test
-```
-
-### Frontend Tests
-```bash
-cd client
-npm test
-# or
-yarn test
-```
-
-## 🐳 Docker Support
-
-Docker configuration is available in the server directory:
-
-```bash
-cd server
-docker build -t milestone-tracker-backend .
-docker run -p 8080:8080 milestone-tracker-backend
-```
-
-For complete deployment instructions including Docker Compose, Heroku, AWS, and VPS deployment, see the [Deployment Guide](/docs/DEPLOYMENT.md).
-
-## 🤝 Contributing
-
-We welcome contributions! Please see our [Contributing Guidelines](CONTRIBUTING.md) for details on how to submit pull requests, report issues, and contribute to the project.
-
-## 📜 Code of Conduct
-
-This project adheres to a [Code of Conduct](CODE_OF_CONDUCT.md). By participating, you are expected to uphold this code.
-
 ## 📝 License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
@@ -264,12 +221,6 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 - **Skywalker690** - *Initial work* - [GitHub Profile](https://github.com/Skywalker690)
 
-## 🙏 Acknowledgments
-
-- React and Spring Boot communities for excellent documentation
-- Radix UI for accessible component primitives
-- Tailwind CSS for utility-first styling
-- All contributors who help improve this project
 
 ## 📧 Contact & Support
 
@@ -278,17 +229,3 @@ If you have any questions, issues, or suggestions:
 - Submit a pull request for improvements
 - Star the repository if you find it helpful!
 
-## 🗺️ Roadmap
-
-Future enhancements planned:
-- [ ] Email notifications for upcoming milestones
-- [ ] Milestone categories and tags
-- [ ] Data export functionality (CSV, PDF)
-- [ ] Mobile app version
-- [ ] Collaborative milestone sharing
-- [ ] Analytics and insights dashboard
-- [ ] Integration with calendar applications
-
----
-
-Made with ❤️ by the Skywalker
