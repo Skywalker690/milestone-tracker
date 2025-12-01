@@ -5,7 +5,9 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
+
 import java.util.Arrays;
+import java.util.Collections;
 
 @Configuration
 public class CorsConfig {
@@ -15,14 +17,7 @@ public class CorsConfig {
         CorsConfiguration corsConfiguration = new CorsConfiguration();
 
         // Allow all origins (you can restrict this to specific domains in production)
-        corsConfiguration.setAllowedOriginPatterns(
-                Arrays.asList(
-                        "https://milestone-tracker-phi.vercel.app",
-                        "https://milestone-tracker-ybwo.vercel.app",
-                        "http://localhost:3000"
-                )
-        );
-
+        corsConfiguration.setAllowedOriginPatterns(Collections.singletonList("*"));
 
         // Allow specific HTTP methods
         corsConfiguration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
