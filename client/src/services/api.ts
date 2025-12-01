@@ -1,6 +1,6 @@
 
-//export const REACT_APP_API_BASE_URL =  'http://localhost:8080';
-export const REACT_APP_API_BASE_URL = "https://milestone-tracker-f3or.onrender.com" ;
+//export const REACT_APP_API_BASE_URL =  'http://localhost:8080/api';
+export const REACT_APP_API_BASE_URL = "https://milestone-tracker-f3or.onrender.com/api" ;
 
 type RequestMethod = 'GET' | 'POST' | 'PUT' | 'DELETE';
 
