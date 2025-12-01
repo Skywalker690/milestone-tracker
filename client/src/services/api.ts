@@ -1,6 +1,9 @@
 
+//console.log('API Base URL:', REACT_APP_API_BASE_URL);
+
 //export const REACT_APP_API_BASE_URL =  'http://localhost:8080/api';
-export const REACT_APP_API_BASE_URL = "https://milestone-tracker-f3or.onrender.com/api" ;
+export const REACT_APP_API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8080/api';
+
 
 type RequestMethod = 'GET' | 'POST' | 'PUT' | 'DELETE';
 

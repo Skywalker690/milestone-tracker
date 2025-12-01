@@ -141,14 +141,14 @@ export const Auth: React.FC = () => {
             {/* Social Login Buttons */}
             <div className="grid grid-cols-2 gap-4 mb-8">
               <a
-                href="http://localhost:8080/oauth2/authorization/google"
+                href="https://milestone-tracker-f3or.onrender.com/oauth2/authorization/google"
                 className="flex items-center justify-center px-4 py-3 bg-white border border-slate-200 rounded-xl hover:bg-slate-50 hover:border-slate-300 transition-all duration-200 shadow-sm group"
               >
                 <GoogleIcon />
                 <span className="ml-2 text-sm font-bold text-slate-700 group-hover:text-slate-900">Google</span>
               </a>
               <a
-                href="http://localhost:8080/oauth2/authorization/github"
+                href="https://milestone-tracker-f3or.onrender.com/oauth2/authorization/github"
                 className="flex items-center justify-center px-4 py-3 bg-white border border-slate-200 rounded-xl hover:bg-slate-50 hover:border-slate-300 transition-all duration-200 shadow-sm group"
               >
                 <Github className="w-5 h-5 text-slate-900" />
